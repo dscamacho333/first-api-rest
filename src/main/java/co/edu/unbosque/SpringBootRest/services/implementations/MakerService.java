@@ -1,7 +1,9 @@
 package co.edu.unbosque.SpringBootRest.services.implementations;
 
 import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
+import co.edu.unbosque.SpringBootRest.dtos.ProductDTO;
 import co.edu.unbosque.SpringBootRest.entities.Maker;
+import co.edu.unbosque.SpringBootRest.entities.Product;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IMakerDAO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IMakerService;
 import org.modelmapper.ModelMapper;
@@ -23,12 +25,35 @@ public class MakerService implements IMakerService {
 
     @Override
     public void create(MakerDTO makerDTO) {
-        makerDAO.create(modelMapper.map(makerDTO, Maker.class));
+       Maker maker = Maker.builder()
+               .name(makerDTO.getName())
+               .productList
+                       (makerDTO
+                       .getProductListDTO()
+                       .stream()
+                       .map(p -> modelMapper.map(p, Product.class))
+                       .toList()
+                       )
+               .build();
+       makerDAO.create(maker);
     }
 
     @Override
     public Optional<MakerDTO> readById(Long id) {
-        return Optional.ofNullable(modelMapper.map(makerDAO.readById(id), MakerDTO.class));
+        Maker maker = makerDAO.readById(id).get();
+        MakerDTO makerDTO = MakerDTO.builder()
+                .id(maker.getId())
+                .name(maker.getName())
+                .productListDTO
+                        (maker
+                        .getProductList()
+                        .stream()
+                        .map(p -> modelMapper.map(p, ProductDTO.class))
+                        .collect(Collectors.toList())
+                        )
+                .build();
+
+        return Optional.ofNullable(makerDTO);
     }
 
     @Override
@@ -43,8 +68,23 @@ public class MakerService implements IMakerService {
 
     @Override
     public List<MakerDTO> readAll() {
-        return makerDAO.readAll().stream()
-                .map(maker -> modelMapper.map(maker, MakerDTO.class))
+
+        List<MakerDTO> makersDTO = makerDAO
+                .readAll()
+                .stream()
+                .map( maker ->  MakerDTO.builder()
+                                .id(maker.getId())
+                                .name(maker.getName())
+                                .productListDTO
+                                        (maker
+                                        .getProductList()
+                                        .stream()
+                                        .map(p -> modelMapper.map(p, ProductDTO.class))
+                                        .collect(Collectors.toList())
+                                        )
+                                .build())
                 .collect(Collectors.toList());
+
+        return makersDTO;
     }
 }

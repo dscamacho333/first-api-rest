@@ -1,13 +1,26 @@
 package co.edu.unbosque.SpringBootRest.controllers.interfaces;
 
+import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
+@RequestMapping("/api/maker")
 public interface IMakerAPI {
+
+    @PostMapping("/save")
+    ResponseEntity<?> create(@RequestBody MakerDTO makerDTO);
 
     @GetMapping("/find/{id}")
     ResponseEntity<?> readById(@PathVariable Long id);
+
+    @PutMapping("update/{id}")
+    ResponseEntity<?> update(@PathVariable Long id, @RequestBody MakerDTO makerDTO);
+
+    @DeleteMapping("delete/{id}")
+    ResponseEntity<?> delete(@PathVariable Long id);
+
+    @GetMapping("/findAll")
+    ResponseEntity<?> readAll();
 
 
 }
