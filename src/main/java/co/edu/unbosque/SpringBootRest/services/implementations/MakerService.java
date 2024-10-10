@@ -1,13 +1,16 @@
 package co.edu.unbosque.SpringBootRest.services.implementations;
 
+import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
 import co.edu.unbosque.SpringBootRest.entities.Maker;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IMakerDAO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IMakerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MakerService implements IMakerService {
@@ -15,18 +18,21 @@ public class MakerService implements IMakerService {
     @Autowired
     private IMakerDAO makerDAO;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public void create(Maker maker) {
-        makerDAO.create(maker);
+    public void create(MakerDTO makerDTO) {
+        makerDAO.create(modelMapper.map(makerDTO, Maker.class));
     }
 
     @Override
-    public Optional<Maker> readById(Long id) {
-        return makerDAO.readById(id);
+    public Optional<MakerDTO> readById(Long id) {
+        return Optional.ofNullable(modelMapper.map(makerDAO.readById(id), MakerDTO.class));
     }
 
     @Override
-    public void update(Maker maker) {
+    public void update(MakerDTO makerDTO) {
 
     }
 
@@ -36,7 +42,9 @@ public class MakerService implements IMakerService {
     }
 
     @Override
-    public List<Maker> readAll() {
-        return makerDAO.readAll();
+    public List<MakerDTO> readAll() {
+        return makerDAO.readAll().stream()
+                .map(maker -> modelMapper.map(maker, MakerDTO.class))
+                .collect(Collectors.toList());
     }
 }
