@@ -17,12 +17,12 @@ public class MakerService implements IMakerService {
 
     @Override
     public void create(Maker maker) {
-
+        makerDAO.create(maker);
     }
 
     @Override
     public Optional<Maker> readById(Long id) {
-        return Optional.empty();
+        return makerDAO.readById(id);
     }
 
     @Override
@@ -32,11 +32,11 @@ public class MakerService implements IMakerService {
 
     @Override
     public void deleteById(Long id) {
-
+        makerDAO.deleteById(id);
     }
 
     @Override
     public List<Maker> readAll() {
-        return List.of();
+        return makerDAO.readAll();
     }
 }

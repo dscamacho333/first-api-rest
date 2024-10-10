@@ -18,12 +18,12 @@ public class ProductService implements IProductService {
 
     @Override
     public void create(Product product) {
-
+        productDAO.create(product);
     }
 
     @Override
     public Optional<Product> readById(Long id) {
-        return Optional.empty();
+        return productDAO.readById(id);
     }
 
     @Override
@@ -33,16 +33,16 @@ public class ProductService implements IProductService {
 
     @Override
     public void deleteById(Long id) {
-
+        productDAO.deleteById(id);
     }
 
     @Override
     public List<Product> readByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        return List.of();
+        return productDAO.readByPriceRange(minPrice, maxPrice);
     }
 
     @Override
     public List<Product> readAll() {
-        return List.of();
+        return productDAO.readAll();
     }
 }
