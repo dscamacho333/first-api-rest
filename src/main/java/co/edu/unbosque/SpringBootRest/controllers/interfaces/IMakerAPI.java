@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/maker")
 public interface IMakerAPI {
 
-    @PostMapping("/save")
+    @PostMapping("/create")
     ResponseEntity<?> create(@RequestBody MakerDTO makerDTO);
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/read/{id}")
     ResponseEntity<?> readById(@PathVariable Long id);
 
     @PutMapping("update/{id}")
@@ -19,7 +19,7 @@ public interface IMakerAPI {
     @DeleteMapping("delete/{id}")
     ResponseEntity<?> delete(@PathVariable Long id);
 
-    @GetMapping("/findAll")
+    @GetMapping("/readAll")
     ResponseEntity<?> readAll();
 
 

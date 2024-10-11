@@ -1,6 +1,8 @@
 package co.edu.unbosque.SpringBootRest.services.implementations;
 
+import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
 import co.edu.unbosque.SpringBootRest.dtos.ProductDTO;
+import co.edu.unbosque.SpringBootRest.entities.Maker;
 import co.edu.unbosque.SpringBootRest.entities.Product;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IProductDAO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IProductService;
@@ -23,12 +25,24 @@ public class ProductService implements IProductService {
 
     @Override
     public void create(ProductDTO productDTO) {
-        productDAO.create(modelMapper.map(productDTO, Product.class));
+        Product product = Product.builder()
+                .name(productDTO.getName())
+                .price(productDTO.getPrice())
+                .maker(modelMapper.map(productDTO.getMakerDTO(), Maker.class))
+                .build();
+        productDAO.create(product);
     }
 
     @Override
     public Optional<ProductDTO> readById(Long id) {
-        return Optional.ofNullable(modelMapper.map(productDAO.readById(id), ProductDTO.class));
+        Product product = productDAO.readById(id).get();
+        ProductDTO productDTO = ProductDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .makerDTO(modelMapper.map(product.getMaker(), MakerDTO.class))
+                .build();
+        return Optional.ofNullable(productDTO);
     }
 
     @Override
@@ -45,7 +59,12 @@ public class ProductService implements IProductService {
     public List<ProductDTO> readByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
         return productDAO.readByPriceRange(minPrice, maxPrice)
                 .stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .map(product -> ProductDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .makerDTO(modelMapper.map(product.getMaker(), MakerDTO.class))
+                        .build())
                 .collect(Collectors.toList());
     }
 
@@ -53,7 +72,12 @@ public class ProductService implements IProductService {
     public List<ProductDTO> readAll() {
         return productDAO.readAll()
                 .stream()
-                .map(product -> modelMapper.map(product, ProductDTO.class))
+                .map( product -> ProductDTO.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .makerDTO(modelMapper.map(product.getMaker(), MakerDTO.class))
+                        .build())
                 .collect(Collectors.toList());
     }
 }
