@@ -4,6 +4,7 @@ import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
 import co.edu.unbosque.SpringBootRest.dtos.ProductDTO;
 import co.edu.unbosque.SpringBootRest.entities.Maker;
 import co.edu.unbosque.SpringBootRest.entities.Product;
+import co.edu.unbosque.SpringBootRest.exceptions.exceptions.EntityNotFoundException;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IMakerDAO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IMakerService;
 import org.modelmapper.ModelMapper;
@@ -40,7 +41,11 @@ public class MakerService implements IMakerService {
 
     @Override
     public Optional<MakerDTO> readById(Long id) {
-        Maker maker = makerDAO.readById(id).get();
+        Optional<Maker> makerOptional  = makerDAO.readById(id);
+        if(!makerOptional.isPresent()){
+            throw  new EntityNotFoundException("Maker does not exist in the DataBase!");
+        }
+        Maker maker = makerOptional.get();
         MakerDTO makerDTO = MakerDTO.builder()
                 .id(maker.getId())
                 .name(maker.getName())

@@ -18,10 +18,6 @@ public class ProductControllerImplementation implements IProductAPI {
 
     @Override
     public ResponseEntity<?> create(ProductDTO productDTO) {
-        System.out.println(productDTO.getId());
-        System.out.println(productDTO.getName());
-        System.out.println(productDTO.getPrice());
-        System.out.println(productDTO.getMakerDTO());
         productService.create(productDTO);
         return ResponseEntity
                 .status(HttpStatusCode.
