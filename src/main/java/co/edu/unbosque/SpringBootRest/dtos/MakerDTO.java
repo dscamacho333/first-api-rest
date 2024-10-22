@@ -1,6 +1,7 @@
 package co.edu.unbosque.SpringBootRest.dtos;
 
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MakerDTO {
 
     private Long id;
+    @NotBlank(message = "Maker must have a name.")
     private String name;
     private List<ProductDTO> productListDTO = new ArrayList<>();
 

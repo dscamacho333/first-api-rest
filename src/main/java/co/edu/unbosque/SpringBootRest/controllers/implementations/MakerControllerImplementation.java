@@ -3,6 +3,7 @@ package co.edu.unbosque.SpringBootRest.controllers.implementations;
 import co.edu.unbosque.SpringBootRest.controllers.interfaces.IMakerAPI;
 import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IMakerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class MakerControllerImplementation implements IMakerAPI {
 
 
     @Override
-    public ResponseEntity<?> create(MakerDTO makerDTO) {
+    public ResponseEntity<?> create(@Valid MakerDTO makerDTO) {
         makerService.create(makerDTO);
         return ResponseEntity
                 .status(HttpStatusCode
