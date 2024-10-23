@@ -13,16 +13,20 @@ import java.util.Optional;
 @RestController
 public class MakerControllerImplementation implements IMakerAPI {
 
-    @Autowired
-    private IMakerService makerService;
 
+    private final IMakerService makerService;
+
+    @Autowired
+    public MakerControllerImplementation(IMakerService makerService) {
+        this.makerService = makerService;
+    }
 
     @Override
     public ResponseEntity<?> create(@Valid MakerDTO makerDTO) {
         makerService.create(makerDTO);
         return ResponseEntity
                 .status(HttpStatusCode
-                        .valueOf(205))
+                        .valueOf(201))
                 .build();
     }
 

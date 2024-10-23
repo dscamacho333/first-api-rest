@@ -18,10 +18,16 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService implements IProductService {
 
+
+    private final IProductDAO productDAO;
+
+    private final ModelMapper modelMapper;
+
     @Autowired
-    private IProductDAO productDAO;
-    @Autowired
-    private ModelMapper modelMapper;
+    public ProductService(IProductDAO productDAO, ModelMapper modelMapper) {
+        this.productDAO = productDAO;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public void create(ProductDTO productDTO) {

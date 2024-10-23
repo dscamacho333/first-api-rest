@@ -12,8 +12,12 @@ import java.util.Optional;
 @Component
 public class MakerDAOImplementation implements IMakerDAO {
 
+    private final IMakerRepository makerRepository;
+
     @Autowired
-    private IMakerRepository makerRepository;
+    public MakerDAOImplementation(IMakerRepository makerRepository){
+        this.makerRepository = makerRepository;
+    }
 
     @Override
     public void create(Maker maker) {

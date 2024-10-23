@@ -4,6 +4,7 @@ import co.edu.unbosque.SpringBootRest.dtos.MakerDTO;
 import co.edu.unbosque.SpringBootRest.dtos.ProductDTO;
 import co.edu.unbosque.SpringBootRest.entities.Maker;
 import co.edu.unbosque.SpringBootRest.entities.Product;
+import co.edu.unbosque.SpringBootRest.exceptions.exceptions.EmptyCollectionException;
 import co.edu.unbosque.SpringBootRest.exceptions.exceptions.EntityNotFoundException;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IMakerDAO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IMakerService;
@@ -18,11 +19,17 @@ import java.util.stream.Collectors;
 @Service
 public class MakerService implements IMakerService {
 
-    @Autowired
-    private IMakerDAO makerDAO;
+
+    private final IMakerDAO makerDAO;
+
+
+    private final  ModelMapper modelMapper;
 
     @Autowired
-    private ModelMapper modelMapper;
+    public MakerService(IMakerDAO makerDAO, ModelMapper modelMapper) {
+        this.makerDAO = makerDAO;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public void create(MakerDTO makerDTO) {
@@ -41,11 +48,10 @@ public class MakerService implements IMakerService {
 
     @Override
     public Optional<MakerDTO> readById(Long id) {
-        Optional<Maker> makerOptional  = makerDAO.readById(id);
-        if(!makerOptional.isPresent()){
-            throw  new EntityNotFoundException("Maker does not exist in the DataBase!");
-        }
-        Maker maker = makerOptional.get();
+        Maker maker  = makerDAO
+                .readById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Maker was not found!"));
+
         MakerDTO makerDTO = MakerDTO.builder()
                 .id(maker.getId())
                 .name(maker.getName())
@@ -58,7 +64,7 @@ public class MakerService implements IMakerService {
                         )
                 .build();
 
-        return Optional.ofNullable(makerDTO);
+        return Optional.of(makerDTO);
     }
 
     @Override
@@ -68,14 +74,19 @@ public class MakerService implements IMakerService {
 
     @Override
     public void deleteById(Long id) {
+        readById(id);
         makerDAO.deleteById(id);
     }
 
     @Override
     public List<MakerDTO> readAll() {
 
-        List<MakerDTO> makersDTO = makerDAO
-                .readAll()
+        List<Maker> makers = makerDAO.readAll();
+        if(makers.isEmpty()){
+            throw  new EmptyCollectionException("There are no makers in the data base");
+        }
+
+        List<MakerDTO> makersDTO = makers
                 .stream()
                 .map( maker ->  MakerDTO.builder()
                                 .id(maker.getId())
@@ -92,4 +103,5 @@ public class MakerService implements IMakerService {
 
         return makersDTO;
     }
+
 }

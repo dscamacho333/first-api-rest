@@ -2,7 +2,7 @@ package co.edu.unbosque.SpringBootRest.persistance.implementations;
 
 import co.edu.unbosque.SpringBootRest.entities.Product;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IProductDAO;
-import co.edu.unbosque.SpringBootRest.repositories.IMakerRepository;
+
 import co.edu.unbosque.SpringBootRest.repositories.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,8 +14,13 @@ import java.util.Optional;
 @Component
 public class ProductDAOImplementation implements IProductDAO {
 
+
+    private final IProductRepository productRepository;
+
     @Autowired
-    private IProductRepository productRepository;
+    public ProductDAOImplementation(IProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
 
     @Override
     public void create(Product product) {

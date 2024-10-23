@@ -13,10 +13,10 @@ public interface IMakerAPI {
     @GetMapping("/read/{id}")
     ResponseEntity<?> readById(@PathVariable Long id);
 
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     ResponseEntity<?> update(@PathVariable Long id, @RequestBody MakerDTO makerDTO);
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     ResponseEntity<?> delete(@PathVariable Long id);
 
     @GetMapping("/readAll")

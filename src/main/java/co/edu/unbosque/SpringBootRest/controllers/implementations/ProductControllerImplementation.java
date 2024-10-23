@@ -13,8 +13,13 @@ import java.util.Optional;
 @RestController
 public class ProductControllerImplementation implements IProductAPI {
 
+
+    private final IProductService productService;
+
     @Autowired
-    private IProductService productService;
+    public ProductControllerImplementation(IProductService productService) {
+        this.productService = productService;
+    }
 
     @Override
     public ResponseEntity<?> create(ProductDTO productDTO) {
