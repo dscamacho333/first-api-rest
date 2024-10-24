@@ -6,7 +6,10 @@ import co.edu.unbosque.SpringBootRest.entities.Maker;
 import co.edu.unbosque.SpringBootRest.entities.Product;
 import co.edu.unbosque.SpringBootRest.persistance.interfaces.IProductDAO;
 import co.edu.unbosque.SpringBootRest.services.interfaces.IProductService;
+import jakarta.persistence.EntityManager;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +26,27 @@ public class ProductService implements IProductService {
 
     private final ModelMapper modelMapper;
 
+    private final EntityManager entityManager;
+
+    private Logger logger = LoggerFactory.getLogger(ProductService.class);
+
     @Autowired
-    public ProductService(IProductDAO productDAO, ModelMapper modelMapper) {
+    public ProductService(IProductDAO productDAO, ModelMapper modelMapper, EntityManager entityManager) {
         this.productDAO = productDAO;
         this.modelMapper = modelMapper;
+        this.entityManager = entityManager;
     }
 
     @Override
     public void create(ProductDTO productDTO) {
+        Maker maker = entityManager.getReference(Maker.class, productDTO.getMakerDTO().getId());
         Product product = Product.builder()
                 .name(productDTO.getName())
                 .price(productDTO.getPrice())
-                .maker(modelMapper.map(productDTO.getMakerDTO(), Maker.class))
+                .maker(maker)
                 .build();
         productDAO.create(product);
+        logger.info("Everything went just fine!");
     }
 
     @Override

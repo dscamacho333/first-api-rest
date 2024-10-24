@@ -26,6 +26,6 @@ public class Product {
     @NotNull(message = "Product must have a price.")
     private BigDecimal price;
     @ManyToOne
-    @JoinColumn(name = "maker_id", nullable = false)
+    @JoinColumn(name = "maker_id")
     private Maker maker;
 }

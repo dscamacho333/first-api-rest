@@ -19,6 +19,7 @@ public class Maker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "maker_id")
     private long id;
     @Column(name = "name")
     @NotBlank(message = "Maker must have a name.")

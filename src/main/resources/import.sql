@@ -1,9 +1,9 @@
 
-INSERT INTO maker(id,name) VALUES (1,"ZARA");
-INSERT INTO maker(id,name) VALUES (2,"H&M");
-INSERT INTO maker(id,name) VALUES (3,"Falabella");
-INSERT INTO maker(id,name) VALUES (4,"Arturo Calle");
-INSERT INTO maker(id,name) VALUES (5,"Koaj");
+INSERT INTO maker(maker_id,name) VALUES (1,"ZARA");
+INSERT INTO maker(maker_id,name) VALUES (2,"H&M");
+INSERT INTO maker(maker_id,name) VALUES (3,"Falabella");
+INSERT INTO maker(maker_id,name) VALUES (4,"Arturo Calle");
+INSERT INTO maker(maker_id,name) VALUES (5,"Koaj");
 
 
 INSERT INTO product(id,name,price,maker_id) VALUES (1,"Camiseta",50, 2);
