@@ -1,6 +1,7 @@
 package co.edu.unbosque.SpringBootRest.dtos;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class ProductDTO {
     private String name;
     @NotNull(message = "Product must have a price.")
     private BigDecimal price;
+    @NotNull(message = "Product maker must not be null. ")
     private MakerDTO makerDTO;
 
 }
